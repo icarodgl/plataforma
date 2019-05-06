@@ -23,6 +23,8 @@ var jumping = false
 
 var prev_jump_pressed = false
 
+var animacao_ant = ""
+var animacao = "edle"
 
 func _physics_process(delta):
 	# Create forces
@@ -31,17 +33,22 @@ func _physics_process(delta):
 	var walk_left = Input.is_action_pressed("esquerda")
 	var walk_right = Input.is_action_pressed("direita")
 	var jump = Input.is_action_pressed("pulo")
-	
+
 	var stop = true
 	
 	if walk_left:
+		get_node("peladim").set_flip_h(true)
 		if velocity.x <= WALK_MIN_SPEED and velocity.x > -WALK_MAX_SPEED:
 			force.x -= WALK_FORCE
 			stop = false
 	elif walk_right:
+		get_node("peladim").set_flip_h(false)
 		if velocity.x >= -WALK_MIN_SPEED and velocity.x < WALK_MAX_SPEED:
 			force.x += WALK_FORCE
 			stop = false
+	
+	
+	
 	
 	if stop:
 		var vsign = sign(velocity.x)
@@ -52,7 +59,16 @@ func _physics_process(delta):
 			vlen = 0
 		
 		velocity.x = vlen * vsign
-	
+		animacao = 'edle'
+		if animacao != animacao_ant:
+			get_node("anim").play(animacao)
+			animacao_ant = animacao
+	else:
+		animacao = 'anda'
+		if animacao != animacao_ant:
+			get_node("anim").play(animacao)
+			animacao_ant = animacao
+			
 	# Integrate forces to velocity
 	velocity += force * delta	
 	# Integrate velocity into motion and move
@@ -64,7 +80,7 @@ func _physics_process(delta):
 	if jumping and velocity.y > 0:
 		# If falling, no longer jumping
 		jumping = false
-	
+
 	if on_air_time < JUMP_MAX_AIRBORNE_TIME and jump and not prev_jump_pressed and not jumping:
 		# Jump must also be allowed to happen if the character left the floor a little bit ago.
 		# Makes controls more snappy.
