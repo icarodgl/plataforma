@@ -7,9 +7,10 @@
 radius = 6.09745
 height = 10.7625
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "anda"
 length = 0.5
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("peladim:frame")
 tracks/0/interp = 1
@@ -23,9 +24,10 @@ tracks/0/keys = {
 "values": [ 14, 17 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "edle"
 length = 0.1
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("peladim:frame")
 tracks/0/interp = 1
@@ -39,7 +41,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 152.883, 10 )
 
 [node name="game" type="Node"]
@@ -47,28 +49,36 @@ extents = Vector2( 152.883, 10 )
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="player" type="KinematicBody2D" parent="Node2D"]
-position = Vector2( 77.7704, 17.5611 )
+position = Vector2( 77.9897, 19.0231 )
 script = ExtResource( 1 )
 
 [node name="peladim" type="Sprite" parent="Node2D/player"]
 position = Vector2( -0.307297, 1.95441 )
 texture = ExtResource( 2 )
 hframes = 23
-frame = 1
+frame = 17
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/player"]
+[node name="colid" type="CollisionShape2D" parent="Node2D/player"]
 visible = false
 position = Vector2( 0.17041, 0.413589 )
 shape = SubResource( 1 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/player"]
-anims/anda = SubResource( 3 )
-anims/edle = SubResource( 4 )
+[node name="anim" type="AnimationPlayer" parent="Node2D/player"]
+anims/anda = SubResource( 2 )
+anims/edle = SubResource( 3 )
+
+[node name="raychao" type="RayCast2D" parent="Node2D/player"]
+position = Vector2( 0.272095, 11.8237 )
+cast_to = Vector2( 0, 1 )
+collision_mask = 2
+collide_with_areas = true
 
 [node name="chão" type="StaticBody2D" parent="."]
-position = Vector2( 1.25436, 91.5684 )
+position = Vector2( 287.97, 196.634 )
 scale = Vector2( 2.55446, 1.21876 )
+collision_layer = 2
 constant_linear_velocity = Vector2( 0, 0.15 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="chão"]
-shape = SubResource( 2 )
+position = Vector2( -0.00920105, 0.782997 )
+shape = SubResource( 4 )
